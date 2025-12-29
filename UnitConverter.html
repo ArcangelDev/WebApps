@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>iConvert</title>
+    <style>
+        :root {
+            --ios-blue: #007AFF;
+            --bg-color: #F2F2F7;
+            --card-bg: #FFFFFF;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-top: 0;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: #8E8E93;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #C6C6C8;
+            border-radius: 8px;
+            font-size: 16px; /* Prevents auto-zoom on iOS */
+            box-sizing: border-box;
+        }
+
+        .result {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--ios-blue);
+            text-align: center;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>iConvert</h1>
+
+    <div class="card">
+        <h2>Length</h2>
+        <label>Value</label>
+        <input type="number" id="lengthInput" placeholder="Enter value" oninput="convertLength()">
+        
+        <label>From</label>
+        <select id="lengthFrom" onchange="convertLength()">
+            <option value="m">Meters</option>
+            <option value="ft">Feet</option>
+            <option value="km">Kilometers</option>
+            <option value="mi">Miles</option>
+        </select>
+
+        <label>To</label>
+        <select id="lengthTo" onchange="convertLength()">
+            <option value="ft">Feet</option>
+            <option value="m">Meters</option>
+            <option value="km">Kilometers</option>
+            <option value="mi">Miles</option>
+        </select>
+
+        <div class="result" id="lengthResult">0.00</div>
+    </div>
+
+    <div class="card">
+        <h2>Weight</h2>
+        <label>Value</label>
+        <input type="number" id="weightInput" placeholder="Enter value" oninput="convertWeight()">
+        
+        <label>From</label>
+        <select id="weightFrom" onchange="convertWeight()">
+            <option value="kg">Kilograms</option>
+            <option value="lb">Pounds</option>
+            <option value="oz">Ounces</option>
+        </select>
+
+        <label>To</label>
+        <select id="weightTo" onchange="convertWeight()">
+            <option value="lb">Pounds</option>
+            <option value="kg">Kilograms</option>
+            <option value="oz">Ounces</option>
+        </select>
+
+        <div class="result" id="weightResult">0.00</div>
+    </div>
+</div>
+
+<script>
+    // Conversion Factors relative to base (Meters / Kilograms)
+    const lengthFactors = {
+        m: 1,
+        ft: 0.3048,
+        km: 1000,
+        mi: 1609.34
+    };
+
+    const weightFactors = {
+        kg: 1,
+        lb: 0.453592,
+        oz: 0.0283495
+    };
+
+    function convertLength() {
+        const val = document.getElementById('lengthInput').value;
+        const from = document.getElementById('lengthFrom').value;
+        const to = document.getElementById('lengthTo').value;
+        
+        if (!val) return;
+
+        // Convert to meters first, then to target unit
+        const meters = val * lengthFactors[from];
+        const result = meters / lengthFactors[to];
+        
+        document.getElementById('lengthResult').innerText = result.toFixed(2);
+    }
+
+    function convertWeight() {
+        const val = document.getElementById('weightInput').value;
+        const from = document.getElementById('weightFrom').value;
+        const to = document.getElementById('weightTo').value;
+        
+        if (!val) return;
+
+        // Convert to kg first, then to target unit
+        const kg = val * weightFactors[from];
+        const result = kg / weightFactors[to];
+        
+        document.getElementById('weightResult').innerText = result.toFixed(2);
+    }
+</script>
+
+</body>
+</html>
